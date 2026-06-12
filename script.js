@@ -1,6 +1,32 @@
 let megaList = { ...adventuringGear, ...armor, ...magic, ...poisons, ...potions, ...toolsAndKits, ...weapons };
 
 /*
+// build maps of normalized key -> original key
+const map1 = new Map(
+  Object.keys(megaList).map(k => [k.toLowerCase(), k])
+);
+
+const map2 = new Map(
+  Object.keys(items).map(k => [k.toLowerCase(), k])
+);
+
+// Keys in obj1 but not obj2 (case-insensitive)
+const onlyInObj1 = [...map1.keys()]
+  .filter(k => !map2.has(k))
+  .map(k => map1.get(k));
+
+// Keys in obj2 but not obj1 (case-insensitive)
+const onlyInObj2 = [...map2.keys()]
+  .filter(k => !map1.has(k))
+  .map(k => map2.get(k));
+
+
+// still a few unaccoutned for
+console.log("Keys in megaList but not items:", onlyInObj1);
+console.log("Keys in items but not megaList:", onlyInObj2);
+*/
+
+/*
 to do-
 delete duplicats
 merge lists
@@ -14,6 +40,39 @@ clean up the scaling feature?
 fix armor price
 return price.slice(0, -6) + '$' + price.slice(-6, -3);
 */
+
+let customItems = {
+    "Custom Flag": {
+        price: '20 gp',
+        description: 'Publiiiii will make you a flag with any design you want. Hang it up out front of your house!',
+        group: 'Decor',
+    },
+    "Custom Light": {
+        price: '10 gp',
+        description: 'Publiiii will make you a light with any pattern or effect you want. Give your living room a whole new vibe!',
+        group: 'Decor',
+    },
+    "Custom Tablecloth": {
+        price: '10 gp',
+        description: 'Publiiiiii will make you a tablecloth of any shape and size with any design you want. Perfect for your desk, table, TV stand, or anything like that!',
+        group: 'Decor',
+    }
+};
+
+let newItems = {
+    "Wacky Inflatable Arms Man": {
+        price: '15 gp',
+        description: 'Advertise your business right on your front lawn! You can even put decals on him if you have any.',
+        group: 'Decor',
+    },
+    "Nerf Gun Shelf": {
+        price: '15 gp',
+        description: 'A bright orange and blue shelf perfect for displaying your Nerf arsenal!',
+        group: 'Decor',
+    },
+};
+
+megaList = { ...megaList, ...newItems, ...customItems };
 
 // convert price to dollars
 function convertPrice(item) {
@@ -108,7 +167,13 @@ function createDivs(count) {
         if (keys.length === 0) {
             return;
         }
-        const item = keys[Math.floor(Math.random() * keys.length)];
+        let item;
+        if (i === 0) {
+            const customKeys = Object.keys(customItems);
+            item = customKeys[Math.floor(Math.random() * customKeys.length)];;
+        } else {
+            item = keys[Math.floor(Math.random() * keys.length)];
+        }
 
         const div = document.createElement('div');
         //window.innerWidth
